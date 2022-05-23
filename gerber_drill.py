@@ -52,8 +52,8 @@ def GenGerberDrill(board = None, split_G85 = 0.2, plotDir = "plot/", plotReferen
 	popt.SetAutoScale(False)        #do not change it
 	popt.SetScale(1)                #do not change it
 	popt.SetMirror(False)
-	popt.SetUseGerberAttributes(True)
-	popt.SetUseGerberProtelExtensions(False)
+	popt.SetUseGerberAttributes(False)
+	popt.SetUseGerberProtelExtensions(True)
 	popt.SetExcludeEdgeLayer(True)
 	popt.SetScale(1)
 	popt.SetUseAuxOrigin(True)
@@ -121,7 +121,7 @@ def GenGerberDrill(board = None, split_G85 = 0.2, plotDir = "plot/", plotReferen
 		offset = board.GetDesignSettings().GetAuxOrigin()
 	# False to generate 2 separate drill files (one for plated holes, one for non plated holes)
 	# True to generate only one drill file
-	mergeNPTH = False
+	mergeNPTH = True
 	logger("set drill offset ", offset)
 	drlwriter.SetOptions( mirror, minimalHeader, offset, mergeNPTH )
 
@@ -142,7 +142,8 @@ def GenGerberDrill(board = None, split_G85 = 0.2, plotDir = "plot/", plotReferen
 		logger("Split the slot into holes")
 		SplitSlotInDrill(pctl.GetPlotDirName(), False, split_G85)
 
-	files = [f for f in os.listdir(pctl.GetPlotDirName()) if f.endswith('.gbr')]
+	#files = [f for f in os.listdir(pctl.GetPlotDirName()) if f.endswith('.gbr')]
+	files = [f for f in os.listdir(pctl.GetPlotDirName()) if f.endswith(('.gbl','gbs','gbp','gbo','gm1','gtl','gts','gtp','gtp','gto'))]
 	for f in files:
 		plotFiles.append( pctl.GetPlotDirName() + f )
 
